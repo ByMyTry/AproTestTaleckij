@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">apro_task_taleckij</string>
+    <string name="first_launch_key">first_launch_pref_key</string>
+    <string name="first_launch_title">First launch flag</string>
+    <string name="first_launch_summ">True if this is first launch(by default) else false</string>
+</resources>
