@@ -6,16 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.taleckij_anton.apro_task_taleckij.cars_db.DataModels.Brand;
 import com.taleckij_anton.apro_task_taleckij.cars_db.DataModels.Car;
 import com.taleckij_anton.apro_task_taleckij.cars_db.DataModels.Model;
 import com.taleckij_anton.apro_task_taleckij.cars_db.DataModels.Photo;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -54,25 +50,16 @@ public class CarsDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void insertCar(Car car, long brandId, long modelId) {
+    public long insertCar(Car car, long brandId, long modelId) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(CarsDb.CarsTableColumns.PRICE, car.getPrice());
-            contentValues.put(CarsDb.CarsTableColumns.MANUFACTURE_YEAR, car.getManufactureYear());
-            contentValues.put(CarsDb.CarsTableColumns.MILEAGE, car.getMileage());
-            contentValues.put(CarsDb.CarsTableColumns.ENGINE_VOLUME, car.getEngineVolume());
-            contentValues.put(CarsDb.CarsTableColumns.FUEL_TANK_VOLUME, car.getFuelTankVolume());
-            contentValues.put(CarsDb.CarsTableColumns.MAX_SPEED, car.getMaxSpeed());
-            contentValues.put(CarsDb.CarsTableColumns.WEIGHT, car.getWeight());
-            contentValues.put(CarsDb.CarsTableColumns.PHOTO, car.getPhoto().getBytesPhoto());
-            contentValues.put(CarsDb.CarsTableColumns.BRAND_ID, brandId);
-            contentValues.put(CarsDb.CarsTableColumns.MODEL_ID, modelId);
-            db.insert(CarsDb.CARS_TABLE, null, contentValues);
+            return db.insert(CarsDb.CARS_TABLE, null,
+                    car.toContentValues(brandId, modelId));
         } catch (SQLiteException e) {}
+        return -1;
     }
 
-    public void insertCar(Car car) {
+    public long insertCar(Car car) {
         String brandName = car.getBrand().getName();
         String modelName = car.getModel().getName();
 
@@ -84,7 +71,7 @@ public class CarsDbHelper extends SQLiteOpenHelper {
         if(modelId == -1)
             modelId = insertModel(modelName);
 
-        insertCar(car, brandId, modelId);
+        return insertCar(car, brandId, modelId);
     }
 
 //    public ContentValues getContentValues(int brandId, int modelId){
@@ -148,6 +135,8 @@ public class CarsDbHelper extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(CarsDb.SELECT_ALL_CARS, null);
 
             while (cursor.moveToNext()) {
+                long id = cursor.getLong(cursor.getColumnIndex(CarsDb.CarsTableColumns._ID));
+
                 float price = cursor.getFloat(cursor.getColumnIndex(CarsDb.CarsTableColumns.PRICE));
                 int manufacture_year = cursor.getInt(
                         cursor.getColumnIndex(CarsDb.CarsTableColumns.MANUFACTURE_YEAR));
@@ -172,7 +161,7 @@ public class CarsDbHelper extends SQLiteOpenHelper {
 //                Log.i("+++++++++++++++++++", modelName);
 
                 Car car = new Car(
-                        price, manufacture_year, mileage, engine_volume,
+                        id, price, manufacture_year, mileage, engine_volume,
                         fuel_tank_volume, max_speed, weight,
                         new Photo(null, bytes),// getByteArrayAsBitmap(bytes),
                         new Brand(brandName), new Model(modelName)
@@ -240,6 +229,30 @@ public class CarsDbHelper extends SQLiteOpenHelper {
             db.close();
         } catch (SQLiteException e) {}
         return modelId;
+    }
+
+    public void updateCar(Long id, Car car) {
+        String brandName = car.getBrand().getName();
+        String modelName = car.getModel().getName();
+
+        long brandId = readBrandId(brandName);
+        long modelId = readModelId(modelName);
+
+        if(brandId == -1)
+            brandId = insertBrand(brandName);
+        if(modelId == -1)
+            modelId = insertModel(modelName);
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            db.update(
+                    CarsDb.CARS_TABLE,
+                    car.toContentValues(brandId, modelId),
+                    CarsDb.CarsTableColumns._ID + " = ? ",
+                    new String[]{String.valueOf(id)}
+            );
+            db.close();
+        } catch (SQLiteException e) {}
     }
 
     public void clearData() {

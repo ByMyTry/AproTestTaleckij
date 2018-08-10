@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int ADD_CAR_ACTION_CODE = 0;
 
     private CarsDbHelper mCarsDbHelper;
+    private RecyclerView mAutosRv;
 
     private boolean isFirstLaunch(){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -67,15 +68,15 @@ public class MainActivity extends AppCompatActivity {
 
         mCarsDbHelper = new CarsDbHelper(this);
         if(isFirstLaunch()){
-            showToastMessage("DataBase initialization");
             testInitDb(mCarsDbHelper);
             setFirstLaunchFalse();
+            showToastMessage("DataBase initialization success");
         }
         final ArrayList<Car> cars = mCarsDbHelper.readCars();
 
-        final RecyclerView autosRv = findViewById(R.id.cars_rv);
-        autosRv.setLayoutManager(new LinearLayoutManager(this));
-        autosRv.setAdapter(new CarsRvAdapter(cars));
+        mAutosRv = findViewById(R.id.cars_rv);
+        mAutosRv.setLayoutManager(new LinearLayoutManager(this));
+        mAutosRv.setAdapter(new CarsRvAdapter(cars));
 
         final FloatingActionButton addAutoFab = findViewById(R.id.fab_add_car);
         addAutoFab.setOnClickListener(getFabOnClickListener());
@@ -98,12 +99,6 @@ public class MainActivity extends AppCompatActivity {
             recreate();
         }
     }
-
-//    private void restartActivity(){
-//        Intent intent = getIntent();
-//        finish();
-//        startActivity(intent);
-//    }
 
     private void testInitDb(CarsDbHelper carsDbHelper){
         carsDbHelper.clearData();
@@ -166,9 +161,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Да", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-//                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                                startActivityForResult(pickPhoto , ADD_CAR_ACTION_CODE);
                                 Intent intent = new Intent(
                                         MainActivity.this, CarEditActivity.class);
                                 startActivityForResult(intent , ADD_CAR_ACTION_CODE);

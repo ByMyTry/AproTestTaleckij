@@ -1,16 +1,24 @@
 package com.taleckij_anton.apro_task_taleckij;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.taleckij_anton.apro_task_taleckij.cars_db.CarsDbHelper;
 import com.taleckij_anton.apro_task_taleckij.cars_db.DataModels.Car;
 
 public class CarInfoActivity extends AppCompatActivity {
+
+    private static final int EDIT_CAR_ACTION_CODE = 1;
+
+    private Car mCurrentCar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +33,30 @@ public class CarInfoActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        final Car currentCar = Car.fromIntent(getIntent());
+        mCurrentCar = Car.fromIntent(getIntent());
 
-        fillCarDataView(currentCar);
+        fillCarDataView(mCurrentCar);
 
-//        setTitleColor(getResources().getColor(R.color.colorAccent, null));
-//        setTitle(String.valueOf(currentCar.getPrice()));
+        final FloatingActionButton changeCarInfoFab = findViewById(R.id.fab_change_car_info);
+        changeCarInfoFab.setOnClickListener(getFabOnClickListener());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_CAR_ACTION_CODE && resultCode == RESULT_OK)
+        {
+            CarsDbHelper carsDbHelper = new CarsDbHelper(this);
+            Long currentId = mCurrentCar.getId();
+            if(currentId != null) {
+                Car changedCar = Car.fromIntent(data);
+                carsDbHelper.updateCar(currentId, changedCar);
+
+                changedCar.setId(currentId);
+                mCurrentCar = changedCar;
+                fillCarDataView(mCurrentCar);
+            }
+        }
     }
 
     private void fillCarDataView(Car car) {
@@ -56,5 +82,25 @@ public class CarInfoActivity extends AppCompatActivity {
         maxSpeedView.setText(String.valueOf(car.getMaxSpeed()));
         final TextView weightView = findViewById(R.id.car_weight);
         weightView.setText(String.valueOf(car.getWeight()));
+    }
+
+    private View.OnClickListener getFabOnClickListener(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar snackbar =  Snackbar.make(v, "Редактировать машину?", Snackbar.LENGTH_LONG)
+                        .setAction("Да", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent carEditIntent =
+                                        new Intent(v.getContext(), CarEditActivity.class);
+                                carEditIntent = mCurrentCar.toIntent(carEditIntent);
+                                carEditIntent.putExtra(CarEditActivity.CAR_EDIT_FLAG, true);
+                                startActivityForResult(carEditIntent, EDIT_CAR_ACTION_CODE);
+                            }
+                        });
+                snackbar.show();
+            }
+        };
     }
 }

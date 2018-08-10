@@ -2,15 +2,15 @@ package com.taleckij_anton.apro_task_taleckij.cars_db.DataModels;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Bitmap;
 
 import com.taleckij_anton.apro_task_taleckij.cars_db.CarsDb;
-
-import java.io.ByteArrayOutputStream;
 
 import javax.annotation.Nullable;
 
 public class Car {
+    @Nullable
+    private Long mId;
+
     private float mPrice;
     private int mManufactureYear;
     private int mMileage;
@@ -24,6 +24,15 @@ public class Car {
     private Brand mBrand;
     @Nullable
     private Model mModel;
+
+    @Nullable
+    public Long getId() {
+        return mId;
+    }
+
+    public void setId(long id) {
+        this.mId = id;
+    }
 
     public float getPrice() {
         return mPrice;
@@ -89,6 +98,7 @@ public class Car {
         this.mPhoto = photo;
     }
 
+    @Nullable
     public Brand getBrand() {
         return mBrand;
     }
@@ -97,6 +107,7 @@ public class Car {
         this.mBrand = brand;
     }
 
+    @Nullable
     public Model getModel() {
         return mModel;
     }
@@ -105,10 +116,12 @@ public class Car {
         this.mModel = model;
     }
 
-    public Car(float price, int manufactureYear, int mileage,
+    public Car(@Nullable Long id,
+               float price, int manufactureYear, int mileage,
                int engineVolume, int fuelTankVolume, int maxSpeed,
                int weight, Photo photo,
                @Nullable Brand brand, @Nullable Model model) {
+        this.mId = id;
         this.mPrice = price;
         this.mManufactureYear = manufactureYear;
         this.mMileage = mileage;
@@ -122,13 +135,21 @@ public class Car {
     }
 
     public Car(float price, int manufactureYear, int mileage,
-               int engineVolume, int fuelTankVolume, int maxSpeed,
-               int weight, Photo photo) {
-        this(price, manufactureYear, mileage, engineVolume, fuelTankVolume,
+                int engineVolume, int fuelTankVolume, int maxSpeed,
+                int weight, Photo photo) {
+        this(null, price, manufactureYear, mileage, engineVolume, fuelTankVolume,
                 maxSpeed, weight, photo, null, null);
     }
 
+    public Car(float price, int manufactureYear, int mileage,
+               int engineVolume, int fuelTankVolume, int maxSpeed,
+               int weight, Photo photo, Brand brand, Model model) {
+        this(null, price, manufactureYear, mileage, engineVolume, fuelTankVolume,
+                maxSpeed, weight, photo, brand, model);
+    }
+
     public Intent toIntent(Intent intent){
+        intent.putExtra(CarsDb.CARS_TABLE + CarsDb.CarsTableColumns._ID, getId());
         intent.putExtra(CarsDb.CARS_TABLE + CarsDb.CarsTableColumns.PRICE, getPrice());
         intent.putExtra(
                 CarsDb.CARS_TABLE + CarsDb.CarsTableColumns.MANUFACTURE_YEAR,
@@ -155,6 +176,9 @@ public class Car {
     }
 
     public static Car fromIntent(Intent intent){
+        long id = intent.getLongExtra(
+                CarsDb.CARS_TABLE + CarsDb.CarsTableColumns._ID, -1);
+
         float price = intent.getFloatExtra(
                 CarsDb.CARS_TABLE + CarsDb.CarsTableColumns.PRICE, 0);
         int manufactureYear = intent.getIntExtra(
@@ -181,8 +205,28 @@ public class Car {
         String modelName = intent.getStringExtra(
                 CarsDb.MODELS_TABLE + CarsDb.ModelsTableColumns.NAME);
         Model model = new Model(modelName);
-        return new Car(price, manufactureYear, mileage, engineVolume,
+        return new Car(id, price, manufactureYear, mileage, engineVolume,
                 fuelTankVolume, maxSpeed, weight, photo,
                 brand, model);
+    }
+
+    public ContentValues toContentValues() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CarsDb.CarsTableColumns.PRICE, getPrice());
+        contentValues.put(CarsDb.CarsTableColumns.MANUFACTURE_YEAR, getManufactureYear());
+        contentValues.put(CarsDb.CarsTableColumns.MILEAGE, getMileage());
+        contentValues.put(CarsDb.CarsTableColumns.ENGINE_VOLUME, getEngineVolume());
+        contentValues.put(CarsDb.CarsTableColumns.FUEL_TANK_VOLUME, getFuelTankVolume());
+        contentValues.put(CarsDb.CarsTableColumns.MAX_SPEED, getMaxSpeed());
+        contentValues.put(CarsDb.CarsTableColumns.WEIGHT, getWeight());
+        contentValues.put(CarsDb.CarsTableColumns.PHOTO, getPhoto().getBytesPhoto());
+        return contentValues;
+    }
+
+    public ContentValues toContentValues(long brandId, long modelId){
+        ContentValues contentValues = toContentValues();
+        contentValues.put(CarsDb.CarsTableColumns.BRAND_ID, brandId);
+        contentValues.put(CarsDb.CarsTableColumns.MODEL_ID, modelId);
+        return contentValues;
     }
 }

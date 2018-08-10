@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_price"
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_brand"
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_model"
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
@@ -122,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_manufacture_year"
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
@@ -141,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_mileage"
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
@@ -160,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_engine_volume"
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_fuel_tank_volume"
@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
@@ -198,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_max_speed"
@@ -206,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     />
                 <TextView
                     android:id="@+id/car_weight"
@@ -225,7 +225,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginHorizontal="@dimen/margin_info_car"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"/>
             </TableRow>

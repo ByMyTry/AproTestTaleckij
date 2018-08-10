@@ -61,6 +61,7 @@ public interface CarsDb {
 
     String SELECT_ALL_CARS =
             "SELECT DISTINCT " +
+                    CARS_TABLE + "." + CarsTableColumns._ID +  "," +
                     CARS_TABLE + "." + CarsTableColumns.PRICE +  "," +
                     CARS_TABLE + "." + CarsTableColumns.MANUFACTURE_YEAR +  "," +
                     CARS_TABLE + "." + CarsTableColumns.MILEAGE +  "," +

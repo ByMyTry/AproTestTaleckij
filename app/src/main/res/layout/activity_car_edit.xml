@@ -70,13 +70,14 @@
                     />
                 <EditText
                     android:id="@+id/car_price"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black"
+                    android:inputType="numberDecimal"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -89,12 +90,13 @@
                     />
                 <EditText
                     android:id="@+id/car_brand"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
+                    android:inputType="text"
                     android:textColor="@android:color/black"/>
             </TableRow>
             <TableRow>
@@ -108,12 +110,13 @@
                     />
                 <EditText
                     android:id="@+id/car_model"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
+                    android:inputType="text"
                     android:textColor="@android:color/black"/>
             </TableRow>
             <TableRow>
@@ -127,12 +130,13 @@
                     />
                 <EditText
                     android:id="@+id/car_manufacture_year"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
+                    android:inputType="number"
                     android:textColor="@android:color/black"/>
             </TableRow>
             <TableRow>
@@ -146,12 +150,13 @@
                     />
                 <EditText
                     android:id="@+id/car_mileage"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
+                    android:inputType="number"
                     android:textColor="@android:color/black"/>
             </TableRow>
             <TableRow>
@@ -165,12 +170,13 @@
                     />
                 <EditText
                     android:id="@+id/car_engine_volume"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
+                    android:inputType="number"
                     android:textColor="@android:color/black"/>
             </TableRow>
             <TableRow>
@@ -184,12 +190,13 @@
                     />
                 <EditText
                     android:id="@+id/car_fuel_tank_volume"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
+                    android:inputType="number"
                     android:textColor="@android:color/black"/>
             </TableRow>
             <TableRow>
@@ -203,12 +210,13 @@
                     />
                 <EditText
                     android:id="@+id/car_max_speed"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
+                    android:inputType="number"
                     android:textColor="@android:color/black"/>
             </TableRow>
             <TableRow>
@@ -222,12 +230,13 @@
                     />
                 <EditText
                     android:id="@+id/car_weight"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginVertical="16dp"
                     android:layout_marginHorizontal="@dimen/margin_edit_car"
                     android:textSize="20sp"
+                    android:inputType="number"
                     android:textColor="@android:color/black"/>
             </TableRow>
         </TableLayout>
