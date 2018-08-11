@@ -3,13 +3,8 @@ package com.taleckij_anton.apro_task_taleckij;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapRegionDecoder;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +12,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,14 +22,16 @@ import com.taleckij_anton.apro_task_taleckij.cars_db.DataModels.Car;
 import com.taleckij_anton.apro_task_taleckij.cars_db.CarsDbHelper;
 import com.taleckij_anton.apro_task_taleckij.cars_db.DataModels.Photo;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static int ADD_CAR_ACTION_CODE = 0;
+//    private final static int SETTING_ACTION_CODE = 1;
 
     private CarsDbHelper mCarsDbHelper;
     private RecyclerView mAutosRv;
@@ -76,12 +73,20 @@ public class MainActivity extends AppCompatActivity {
 
         mAutosRv = findViewById(R.id.cars_rv);
         mAutosRv.setLayoutManager(new LinearLayoutManager(this));
-        mAutosRv.setAdapter(new CarsRvAdapter(cars));
+        mAutosRv.setAdapter(new CarsRvAdapter(transformCars(cars)));
 
         final FloatingActionButton addAutoFab = findViewById(R.id.fab_add_car);
         addAutoFab.setOnClickListener(getFabOnClickListener());
 
         Stetho.initializeWithDefaults(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        final ArrayList<Car> cars = mCarsDbHelper.readCars();
+        mAutosRv.setAdapter(new CarsRvAdapter(transformCars(cars)));
     }
 
     @Override
@@ -91,13 +96,103 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.settings_car_list_menu_item:
+                Intent carListSettingsIntent =
+                        new Intent(this, CarsListSettingActivity.class);
+//                startActivityForResult(carListSettingsIntent, SETTING_ACTION_CODE);
+                startActivity(carListSettingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == ADD_CAR_ACTION_CODE && resultCode == RESULT_OK)
-        {
-            mCarsDbHelper.insertCar(Car.fromIntent(intent));
-            recreate();
+        if (resultCode == RESULT_OK) {
+            if(requestCode == ADD_CAR_ACTION_CODE){
+                mCarsDbHelper.insertCar(Car.fromIntent(intent));
+                recreate();
+            }
+//            else if (requestCode == SETTING_ACTION_CODE) {
+//                final ArrayList<Car> cars = mCarsDbHelper.readCars();
+//                final CarsRvAdapter carsRvAdapter = new CarsRvAdapter(transformCars(cars, intent));
+//                mAutosRv.setAdapter(carsRvAdapter);
+//            }
         }
+    }
+
+    private ArrayList<Car> transformCars(ArrayList<Car> cars){
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        final LinkedList<Car> transformedCars = new LinkedList<>();
+//        final String filterBrand =
+//                intent.getStringExtra(CarsListSettingActivity.FILTER_BY_BRAND_KEY);
+        final String filterBrand =
+                sp.getString(getResources().getString(R.string.filter_brand_key), "");
+        if(!filterBrand.isEmpty()){
+            for (Car car: cars) {
+                if(car.getBrand() != null &&
+                        car.getBrand().getName().equals(filterBrand))
+                    transformedCars.add(car);
+            }
+        } else {
+            transformedCars.addAll(cars);
+        }
+
+        final LinkedList<Car> transformed1Cars = new LinkedList<>();
+//        final String filterModel
+//                = intent.getStringExtra(CarsListSettingActivity.FILTER_BY_MODEL_KEY);
+        final String filterModel =
+                sp.getString(getResources().getString(R.string.filter_model_key), "");
+        if(!filterModel.isEmpty()){
+            for (Car car: transformedCars) {
+                if(car.getModel() != null &&
+                        car.getModel().getName().equals(filterModel))
+                    transformed1Cars.add(car);
+            }
+        } else {
+            transformed1Cars.addAll(transformedCars);
+        }
+
+        final ArrayList<Car> filteredCars = new ArrayList<>(transformed1Cars);
+//        final String sortType
+//                = intent.getStringExtra(CarsListSettingActivity.SORT_PRICE_KEY);
+//        if(sortType != null){
+        final String sortType =
+                sp.getString(getResources().getString(R.string.sort_price_key), "");
+        if(!sortType.isEmpty()){
+            if (sortType.equals(CarsListSettingActivity.SORT_PRICE_ASC)) {
+                Collections.sort(filteredCars, new Comparator<Car>() {
+                    @Override
+                    public int compare(Car o1, Car o2) {
+                        float res = o1.getPrice() - o2.getPrice();
+                        if(res > 0)
+                            return 1;
+                        if(res < 0)
+                            return -1;
+                        return 0;
+                    }
+                });
+            } else if (sortType.equals(CarsListSettingActivity.SORT_PRICE_DESC)){
+                Collections.sort(filteredCars, new Comparator<Car>() {
+                    @Override
+                    public int compare(Car o1, Car o2) {
+                        float res = o1.getPrice() - o2.getPrice();
+                        if(res > 0)
+                            return -1;
+                        if(res < 0)
+                            return 1;
+                        return 0;
+                    }
+                });
+            }
+        }
+
+        return filteredCars;
     }
 
     private void testInitDb(CarsDbHelper carsDbHelper){

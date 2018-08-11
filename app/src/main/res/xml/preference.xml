@@ -5,4 +5,16 @@
         android:title="@string/first_launch_title"
         android:summary="@string/first_launch_summ"
         android:defaultValue="true"/>
+    <EditTextPreference
+        android:key="@string/filter_brand_key"
+        android:title="@string/filter_brand_title"
+        android:summary="@string/filter_brand_summ" />
+    <EditTextPreference
+        android:key="@string/filter_model_key"
+        android:title="@string/filter_model_title"
+        android:summary="@string/filter_model_summ" />
+    <EditTextPreference
+        android:key="@string/sort_price_key"
+        android:title="@string/sort_price_title"
+        android:summary="@string/sort_price_summ" />
 </PreferenceScreen>

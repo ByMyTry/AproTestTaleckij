@@ -81,7 +81,16 @@ public interface CarsDb {
                     " ON " + CARS_TABLE + "." + CarsTableColumns.MODEL_ID  + " = " +
                     MODELS_TABLE + "." + ModelsTableColumns._ID;
 
-//    String SELECT_ALL_CARS = "";
+
+    String SELECT_ALL_BRANDS_NAMES =
+            "SELECT DISTINCT " +
+                    BRANDS_TABLE + "." + BrandsTableColumns.NAME +
+                    " FROM " + BRANDS_TABLE;
+
+    String SELECT_ALL_MODELS_NAMES =
+            "SELECT DISTINCT " +
+                    MODELS_TABLE + "." + ModelsTableColumns.NAME +
+                    " FROM " + MODELS_TABLE;
 
     String DROP_CARS_TABLE_SCRIPT =
             "DROP TABLE IF EXISTS " + CARS_TABLE;

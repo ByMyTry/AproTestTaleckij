@@ -117,21 +117,6 @@ public class CarsDbHelper extends SQLiteOpenHelper {
         final LinkedList<Car> cars = new LinkedList<>();
         try {
             SQLiteDatabase db = this.getReadableDatabase();
-//            Cursor cursor = db.query(
-//                    //DISTINCT?
-//                    true,
-//                    CarsDb.CARS_TABLE,
-//                    new String[]{CarsDb.CarsTableColumns., CarsDb.CarsTableColumns.PHOTO},
-//                    null,
-//                    null,
-//                    //GROUP BY
-//                    null,
-//                    //having
-//                    null,
-//                    //ORDER BY
-//                    null,
-//                    null
-//            );
             Cursor cursor = db.rawQuery(CarsDb.SELECT_ALL_CARS, null);
 
             while (cursor.moveToNext()) {
@@ -156,9 +141,6 @@ public class CarsDbHelper extends SQLiteOpenHelper {
                         cursor.getColumnIndex(CarsDb.BrandsTableColumns.NAME));
                 String modelName = cursor.getString(
                         cursor.getColumnIndex(CarsDb.ModelsTableColumns.NAME));
-
-//                Log.i("+++++++++++++++++++", brandName);
-//                Log.i("+++++++++++++++++++", modelName);
 
                 Car car = new Car(
                         id, price, manufacture_year, mileage, engine_volume,
@@ -203,6 +185,25 @@ public class CarsDbHelper extends SQLiteOpenHelper {
         return brandId;
     }
 
+    public ArrayList<String> readBrandsNames(){
+        final LinkedList<String> brandsNames = new LinkedList<>();
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(CarsDb.SELECT_ALL_BRANDS_NAMES, null);
+
+            while (cursor.moveToNext()) {
+                String brandName = cursor.getString(
+                        cursor.getColumnIndex(CarsDb.BrandsTableColumns.NAME));
+
+                brandsNames.add(brandName);
+            }
+
+            cursor.close();
+            db.close();
+        } catch (SQLiteException e) {}
+        return new ArrayList<>(brandsNames);
+    }
+
     public long readModelId(String modelName){
         long modelId = -1;
         try {
@@ -229,6 +230,25 @@ public class CarsDbHelper extends SQLiteOpenHelper {
             db.close();
         } catch (SQLiteException e) {}
         return modelId;
+    }
+
+    public ArrayList<String> readModelsNames(){
+        final LinkedList<String> modelsNames = new LinkedList<>();
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(CarsDb.SELECT_ALL_MODELS_NAMES, null);
+
+            while (cursor.moveToNext()) {
+                String brandName = cursor.getString(
+                        cursor.getColumnIndex(CarsDb.ModelsTableColumns.NAME));
+
+                modelsNames.add(brandName);
+            }
+
+            cursor.close();
+            db.close();
+        } catch (SQLiteException e) {}
+        return new ArrayList<>(modelsNames);
     }
 
     public void updateCar(Long id, Car car) {

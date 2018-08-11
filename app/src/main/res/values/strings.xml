@@ -3,4 +3,13 @@
     <string name="first_launch_key">first_launch_pref_key</string>
     <string name="first_launch_title">First launch flag</string>
     <string name="first_launch_summ">True if this is first launch(by default) else false</string>
+    <string name="filter_brand_key">filter_brand_key</string>
+    <string name="filter_model_key">filter_model_key</string>
+    <string name="sort_price_key">sort_price_key</string>
+    <string name="filter_brand_title">filter_brand_title</string>
+    <string name="filter_model_title">filter_model_title</string>
+    <string name="sort_price_title">sort_price_title</string>
+    <string name="filter_brand_summ">filter_brand_summ</string>
+    <string name="filter_model_summ">filter_model_summ</string>
+    <string name="sort_price_summ">sort_price_summ</string>
 </resources>

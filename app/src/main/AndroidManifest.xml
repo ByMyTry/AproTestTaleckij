@@ -22,11 +22,14 @@
             android:name=".CarInfoActivity"
             android:label=""
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.TransparentTheme"/>
-        <activity android:name=".CarEditActivity"
+            android:theme="@style/AppTheme.TransparentTheme" />
+        <activity
+            android:name=".CarEditActivity"
             android:label=""
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.TransparentTheme"/>
+            android:theme="@style/AppTheme.TransparentTheme" />
+        <activity android:name=".CarsListSettingActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
